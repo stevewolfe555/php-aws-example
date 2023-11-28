@@ -1,10 +1,4 @@
-files:
-  "/opt/elasticbeanstalk/hooks/appdeploy/post/99_create_env_file.sh":
-    mode: "000755"
-    owner: root
-    group: root
-    content: |
-      #!/bin/bash
+#!/bin/bash
       # Copy .env.example to .env if it doesn't exist
       if [ ! -f /var/app/current/.env ]; then
         cp /var/app/current/.env.example /var/app/current/.env
