@@ -11,7 +11,7 @@ class WeatherDataTest extends TestCase
     /** @test */
     public function it_can_retrieve_weather_data_for_a_location()
     {
-        $response = $this->get('/api/weather?location=Paris');
+        $response = $this->get('/api/weather/paris');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
