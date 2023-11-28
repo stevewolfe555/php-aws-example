@@ -14,7 +14,7 @@ class WeatherController extends Controller
         $weatherService = new WeatherService();
 
         // Call the getWeatherData method to retrieve weather data
-        $weatherData = $weatherService->getWeatherData($location);
+        $weatherData = $weatherService->getWeatherDataByLocation($location);
 
         if ($weatherData) {
             // Extract and format the specific data

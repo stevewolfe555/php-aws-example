@@ -25,7 +25,7 @@ class WeatherServiceTest extends TestCase
         $weatherService = new WeatherService();
 
         // Call the getWeatherData method
-        $weatherData = $weatherService->getWeatherData('Paris');
+        $weatherData = $weatherService->getWeatherDataByLocation('Paris');
 
         // Assert the expected weather data
         $this->assertEquals('20°C', $weatherData['temperature']);

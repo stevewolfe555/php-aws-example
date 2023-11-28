@@ -6,26 +6,16 @@ use Illuminate\Support\Facades\Http;
 
 class WeatherService
 {
-    public function getWeatherData($location)
+    /**
+     * Get weather data by location name.
+     *
+     * @param string $location
+     * @return array|null
+     */
+    public function getWeatherDataByLocation($location)
     {
-        // Make a request to the Geocoding API
-        $response = Http::get('http://api.openweathermap.org/geo/1.0/direct', [
-            'q' => $location,
-            'limit' => 1, // Limit to 1 result (optional)
-            'appid' => config('services.openweathermap.api_key'),
-        ]);
-
-        
-        // Check if the request was successful
-        if ($response->successful()) {
-            // Decode the JSON response
-            $data = $response->json();
-            
-            // Extract and return the coordinates (first result)
-            if (!empty($data) && count($data) > 0) {
-                $coordinates = $data[0]['lat'] . ',' . $data[0]['lon'];
-            }
-        }
+        // Get location coordinates by name
+        $coordinates = $this->getLocationCoordinates($location);
 
         if ($coordinates) {
             // Make a request to the One Call API using the coordinates
@@ -36,17 +26,39 @@ class WeatherService
                 'units' => 'metric',
             ]);
 
-            // Check if the request was successful
             if ($response->successful()) {
-                // Return the JSON response as an array
                 return $response->json();
             }
 
             // Handle error cases
-            // You can define your error handling logic here
         }
 
         return null;
+    }
 
+    /**
+     * Get location coordinates by location name.
+     *
+     * @param string $location
+     * @return string|null
+     */
+    private function getLocationCoordinates($location)
+    {
+        // Make a request to the Geocoding API
+        $response = Http::get('http://api.openweathermap.org/geo/1.0/direct', [
+            'q' => $location,
+            'limit' => 1, // Limit to 1 result (optional)
+            'appid' => config('services.openweathermap.api_key'),
+        ]);
+
+        if ($response->successful()) {
+            $data = $response->json();
+
+            if (!empty($data) && count($data) > 0) {
+                return $data[0]['lat'] . ',' . $data[0]['lon'];
+            }
+        }
+
+        return null;
     }
 }
